@@ -110,6 +110,10 @@ sample_Count = 0
 ## Add Value to the Sensor Settings keypair list
 sensor_Settings.append({'sample_Count':sample_Count})
 
+# Output Data File Directory Name
+data_dir = 'collected_data'
+## Created in the current working directory
+
 # Sensor Settings List Test Code
 #print(sensor_Settings[0]['norain_Interval'])
 
@@ -134,6 +138,10 @@ display.puts(str(sensor_Settings[4]['sample_Count']))
 #display.set_cursor(linecount_Display-1, 0)
 #display.puts("JHP " + str(sensor_Settings[4]['sample_Count']))
 
+
+
+## Check for data directory if not there create
+
 ###################
 #    Functions    #
 ###################
@@ -156,17 +164,75 @@ def sound_Sample():
   #print(sound_Value)
   return sound_Value
 
+def data_file_check(path,filename):
+  file_with_path = str(path + '/' + filename)
+  status = 'check'
+  if not os.path.isfile(file_with_path):
+    header = "Timestamp,Sound_Value,Rain_Gauge_Value"
+    f = open(file_with_path, "w")
+    f.write(header + "\n")
+    f.close()
+    status = 'File Created'
+  else:
+    status = 'File Existed'
+  return status
+
+def data_print_lastline(path,filename):
+  file_with_path = str(path + '/' + filename)
+  f = open(file_with_path, "r")
+  lineList = f.readlines()
+  f.close()
+  #print(lineList[-1])
+  return lineList[-1]
+
+def data_dir_check (path):
+  data_dir_check_status = False
+  while not data_dir_check_status:
+    if not os.path.exists(data_dir):
+      print("The directory '{}' does not exist - Creating..".format(path))
+      os.mkdir(data_dir)
+    else:
+      #print("Directory exists")
+      data_dir_check_status = True
+  return data_dir_check_status
+
+def data_filename_creator():
+  datestamp=datetime.datetime.utcnow().strftime("%Y%m%d")
+  return str("upstream-raindetector-"+datestamp+".csv") 
+
+def write_data(data_str,current_filename):
+  print("Filename received: "+ current_filename)
+  try:
+    with open(current_filename, 'a') as f:
+      f.write(data_str + "\n")
+  except IOError:
+      print("File not accessible")
+  return 0    
+
+####################
+# Data File Setup  #
+####################
+
+# Data File Initialization
+print("The current working directory is '{}'".format(os.getcwd()))
+print("Data directory '{}/{}' Exists? '{}'".format(os.getcwd(),data_dir, data_dir_check(data_dir)))
+print("Data file check completed with '{}'".format(data_file_check(data_dir,data_filename_creator())))
+print("Last line in '{}':".format(data_filename_creator()))
+print(data_print_lastline(data_dir,data_filename_creator()))
 
 ###################
 # Loop - Sampling #
 ###################
-while sensor_Settings[4]['sample_Count'] < 50: # Dev Loop
+while sensor_Settings[4]['sample_Count'] < 5: # Dev Loop
 #while True: # Production Loop
   #if rain_Status:
     
    # time.sleep(rain_Interval)
   rg_Value = int(rain_Sample())
-  print('{},{},{}'.format(datetime.datetime.utcnow().strftime('%s'),sound_Sample(),rg_Value))
+  sensor_Reading = str('{},{},{}'.format(datetime.datetime.utcnow().strftime('%s'),sound_Sample(),rg_Value))
+  ## Debug Sensor Reading Output to StdOut
+  print(sensor_Reading)
+  write_data(sensor_Reading,str("./{}/{}".format(data_dir,data_filename_creator())))
   sensor_Settings[4]['sample_Count'] += 1
 
   #Checks if Rain detected and sets rain_Status 
