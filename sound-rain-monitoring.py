@@ -201,7 +201,8 @@ def data_filename_creator():
   return str("upstream-raindetector-"+datestamp+".csv") 
 
 def write_data(data_str,current_filename):
-  print("Filename received: "+ current_filename)
+  ## Debug sent variable
+  #print("Filename received: "+ current_filename)
   try:
     with open(current_filename, 'a') as f:
       f.write(data_str + "\n")
@@ -223,15 +224,15 @@ print(data_print_lastline(data_dir,data_filename_creator()))
 ###################
 # Loop - Sampling #
 ###################
-while sensor_Settings[4]['sample_Count'] < 5: # Dev Loop
-#while True: # Production Loop
+#while sensor_Settings[4]['sample_Count'] < 5: # Dev Loop
+while True: # Production Loop
   #if rain_Status:
     
    # time.sleep(rain_Interval)
   rg_Value = int(rain_Sample())
   sensor_Reading = str('{},{},{}'.format(datetime.datetime.utcnow().strftime('%s'),sound_Sample(),rg_Value))
   ## Debug Sensor Reading Output to StdOut
-  print(sensor_Reading)
+  #print(sensor_Reading)
   write_data(sensor_Reading,str("./{}/{}".format(data_dir,data_filename_creator())))
   sensor_Settings[4]['sample_Count'] += 1
 
