@@ -8,6 +8,8 @@ SENSORLOGCHECK=$(tail -n1 /home/pi/upstreamrain/log/sensorstatus-$(date +"%Y%m%d
 echo $SENSORLOGCHECK
 if [ "$SENSORLOGCHECK" == "OK" ]; then
        echo "Starting to record readings"
+       sudo systemctl stop sound-rain-monitoring-py.service
+       sleep 5
        sudo systemctl start sound-rain-monitoring-py.service
 fi
  
