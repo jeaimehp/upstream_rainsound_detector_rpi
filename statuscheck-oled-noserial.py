@@ -56,7 +56,6 @@ for device in range(128):
              print("Value {0}: {1}".format(i,ADC().read(0)))
              time.sleep(.3)
            print(" ")
-           grove_ADC = True
          else:
            display.set_cursor(linecount, 0)
            display.puts('Unknown ' + hex(device) + '?')
@@ -86,74 +85,74 @@ else:
   grove_RTC = True
 
 # Rain Gauge Reset and Check
-import serial
-import time
+#import serial
+#import time
+#
+#print ('\n--> RG9 Rain Gauge Check (UART)')
+#ser = serial.Serial(
+#    port='/dev/ttyAMA0',\
+#    baudrate=9600,\
+#    parity=serial.PARITY_NONE,\
+#    stopbits=serial.STOPBITS_ONE,\
+#    bytesize=serial.EIGHTBITS,\
+#        timeout=0)
+#
+#
+#ser.close()
+#tries = 0
+#while not ser.readable():
+#  print("/dev/ttyAMA0 not open")
+#  ser.close()
+#  time.sleep(.3)
+#  tries =+ 1
+#  if tries > 20:
+#    exit("Could not read serial port")
+#
+#
+#
+#
+#ser.close()
+#time.sleep(.10)
+#ser.open()
+#ser.flush()
+#time.sleep(.10)
+#ser.reset_input_buffer()
+#time.sleep(.10)
+#ser.reset_output_buffer()
+#time.sleep(.10)
+#
+#
+#ser.close()
+#ser.open()
+#ser.write('K\r\n'.encode())
+#time.sleep(.3)
+#count = 0
+#line = ''
+#pwrdays_count = 0
+#while count < 7:
+#  message = ser.readline()
+#  if len(message) > 1:
+#     line = line + message
+#     if  message.endswith('\n'):
+#       print (line)
+#       if line.find('PwrDays') > -1:
+#         pwrdays_count += 1
+#       line = ''
+#       count += 1
+#          
+#
+#ser.close()
+#if pwrdays_count > -1:
+#  display.set_cursor(linecount, 0)
+#  display.puts('RG9 = OK')
+#  linecount += 1
+#  hydreon_RG9 = True
+#else:
+#  display.set_cursor(linecount, 0)
+#  display.puts('RG9 = Not Detected')
+#  hydreon_RG9 = False
 
-print ('\n--> RG9 Rain Gauge Check (UART)')
-ser = serial.Serial(
-    port='/dev/ttyAMA0',\
-    baudrate=9600,\
-    parity=serial.PARITY_NONE,\
-    stopbits=serial.STOPBITS_ONE,\
-    bytesize=serial.EIGHTBITS,\
-        timeout=0)
-
-
-ser.close()
-tries = 0
-while not ser.readable():
-  print("/dev/ttyAMA0 not open")
-  ser.close()
-  time.sleep(.3)
-  tries =+ 1
-  if tries > 20:
-    exit("Could not read serial port")
-
-
-
-
-ser.close()
-time.sleep(.10)
-ser.open()
-ser.flush()
-time.sleep(.10)
-ser.reset_input_buffer()
-time.sleep(.10)
-ser.reset_output_buffer()
-time.sleep(.10)
-
-
-ser.close()
-ser.open()
-ser.write('K\r\n'.encode())
-time.sleep(.3)
-count = 0
-line = ''
-pwrdays_count = 0
-while count < 7:
-  message = ser.readline()
-  if len(message) > 1:
-     line = line + message
-     if  message.endswith('\n'):
-       print (line)
-       if line.find('PwrDays') > -1:
-         pwrdays_count += 1
-       line = ''
-       count += 1
-          
-
-ser.close()
-if pwrdays_count > -1:
-  display.set_cursor(linecount, 0)
-  display.puts('RG9 = OK')
-  linecount += 1
-  hydreon_RG9 = True
-else:
-  display.set_cursor(linecount, 0)
-  display.puts('RG9 = Not Detected')
-  hydreon_RG9 = False
+display.set_cursor(linecount, 0)
+display.puts('RG9 = Unknown')
 
 print ("--- Status Check Complete ---")
-print(grove_OLED,grove_RTC,grove_ADC,hydreon_RG9)
-if grove_OLED and grove_RTC and grove_ADC and hydreon_RG9:
-    print("OK")
