@@ -1,0 +1,10 @@
+● sound-rain-monitoring-py.service - Script captures and outputs data from ADC and RG9 UART
+   Loaded: loaded (/lib/systemd/system/sound-rain-monitoring-py.service; disabled; vendor preset: enabled)
+   Active: active (running) since Mon 2021-05-17 06:01:12 CDT; 5h 59min ago
+ Main PID: 30933 (python)
+    Tasks: 1 (limit: 2062)
+   CGroup: /system.slice/sound-rain-monitoring-py.service
+           └─30933 /usr/bin/python /home/pi/upstreamrain/sound-rain-monitoring.py
+
+May 17 06:01:12 upstreamrainrpi systemd[1]: Started Script captures and outputs data from ADC and RG9 UART.
+Restarting
